@@ -1,37 +1,44 @@
-import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
+import { ProgressBar } from "react-native-paper";
 import { Countdown } from "../components/Countdown";
 import { RoundedButton } from "../components/RoundedButton";
 import { spacing } from "../utils/sizes";
 import { colors } from "../utils/colors";
-export const Timer = ({ focusSubject }) => {
-  const [isStarted, setIsStarted] = useState(false); // Use assignment operator (=) instead of (==)
 
+export const Timer = ({ focusSubject }) => {
+  const [isStarted, setIsStarted] = useState(false);
+  const [progress, setProgress] = useState(1);
   return (
     <View style={styles.container}>
       <View style={styles.countdown}>
         <Countdown
           isPaused={!isStarted}
-          onProgress={() => {}}
+          onProgress={setProgress}
           onEnd={() => {}}
-        /><View style={{ paddingTop: spacing.xxl }}>
-        <Text style={styles.title}>Focus on</Text>
-        <Text style={styles.task}> {focusSubject} </Text>
+        />
+        <View style={{ paddingTop: spacing.xxl }}>
+          <Text style={styles.title}>Focusing on:</Text>
+          <Text style={styles.task}>{focusSubject}</Text>
+        </View>
       </View>
+      <View style={{ paddingTop: spacing.sm }}>
+        <ProgressBar
+          progress={progress}
+          color={colors.progressBar}
+          style={{ height: spacing.sm }}
+        />
       </View>
-      
       <View style={styles.buttonWrapper}>
-        {!isStarted && (
-          <RoundedButton title='Start' onPress={() => setIsStarted(true)} />
-        )}
-        {isStarted && (
-          <RoundedButton title='Pause' onPress={() => setIsStarted(false)} />
+        {!isStarted ? (
+          <RoundedButton title='start' onPress={() => setIsStarted(true)} />
+        ) : (
+          <RoundedButton title='pause' onPress={() => setIsStarted(false)} />
         )}
       </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -51,10 +58,10 @@ const styles = StyleSheet.create({
   title: {
     color: colors.white,
     fontWeight: "bold",
-    textAlign: 'center',
+    textAlign: "center",
   },
   task: {
     color: colors.white,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
