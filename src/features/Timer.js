@@ -24,10 +24,10 @@ export const Timer = ({ focusSubject, clearSubject }) => {
 
   const onEnd = (reset) => {
     Vibration.vibrate(PATTERN);
-    setIsStarted(false)
-    setProgress(1)
-    reset()
-}
+    setIsStarted(false);
+    setProgress(1);
+    reset();
+  };
 
   return (
     <View style={styles.container}>

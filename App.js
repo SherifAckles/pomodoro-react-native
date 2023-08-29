@@ -1,19 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
-  SafeAreaView,
   View,
   StyleSheet,
+  SafeAreaView,
   Platform,
   StatusBar,
 } from "react-native";
-
+import Constants from "expo-constants";
 import { colors } from "./src/utils/colors";
 import { Focus } from "./src/features/Focus";
 import { Timer } from "./src/features/Timer";
 
 export default function App() {
-  const [currentSubject, setCurrentSubject] = useState('test');
+  const [currentSubject, setCurrentSubject] = useState("test");
   return (
     <SafeAreaView style={styles.container}>
       {!currentSubject ? (
@@ -22,13 +22,12 @@ export default function App() {
         <Timer
           focusSubject={currentSubject}
           onTimerEnd={() => {}}
-          clearSubject={() => {setCurrentSubject(null)}}
+          clearSubject={() => setCurrentSubject(null)}
         />
       )}
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
