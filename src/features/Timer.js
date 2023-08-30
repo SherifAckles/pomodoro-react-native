@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Audio } from "expo-av";
 import { View, StyleSheet, Text, Platform, Vibration } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { Countdown } from "../components/Countdown";
@@ -7,6 +8,7 @@ import { spacing } from "../utils/sizes";
 import { colors } from "../utils/colors";
 import { Timing } from "./Timing";
 import { useKeepAwake } from "expo-keep-awake";
+import alarmSound from "../../assets/alarm.mp3"; 
 const ONE_SECOND_IN_MS = 1000;
 
 const PATTERN = [
@@ -17,18 +19,28 @@ const PATTERN = [
   1 * ONE_SECOND_IN_MS,
 ];
 
-export const Timer = ({ focusSubject, clearSubject,reset }) => {
-   useKeepAwake();
+export const Timer = ({ focusSubject, clearSubject, onTimerEnd }) => {
+  useKeepAwake();
   const [isStarted, setIsStarted] = useState(false);
   const [progress, setProgress] = useState(1);
   const [minutes, setMinutes] = useState(0.1);
 
-  const onEnd = (reset) => {
-    Vibration.vibrate(PATTERN);
-    setIsStarted(false);
-    setProgress(1);
-    reset();
-  };
+   const onEnd = async (reset) => {
+     // Play the sound
+    const { sound: playbackObject } = await Audio.Sound.createAsync(
+      alarmSound,
+      { shouldPlay: true }
+    );
+
+     // Vibrate the device
+     Vibration.vibrate(PATTERN);
+
+     setIsStarted(false);
+     setProgress(1);
+     reset();
+     onTimerEnd(focusSubject);
+   };
+
 
   return (
     <View style={styles.container}>

@@ -7,7 +7,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import Constants from 'expo-constants'
+
 import { colors } from "./src/utils/colors";
 import { Focus } from "./src/features/Focus";
 import { Timer } from "./src/features/Timer";
@@ -16,7 +16,7 @@ import { FocusHistory } from "./src/features/FocusHistory";
 
 export default function App() {
   const [currentSubject, setCurrentSubject] = useState();
-  const [history, setHistory] = useState(['temp feature focused']);
+  const [history, setHistory] = useState([]);
 
 
   return (
@@ -29,7 +29,7 @@ export default function App() {
       ) : (
         <Timer
           focusSubject={currentSubject}
-          onTimerEnd={() => {}}
+          onTimerEnd={(subject) => {setHistory([...history,subject])}}
           clearSubject={() => setCurrentSubject(null)}
         />
       )}
